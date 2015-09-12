@@ -6,13 +6,31 @@
 //  Copyright (c) 2015 EngJason. All rights reserved.
 //
 
+import CoreLocation
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, CLLocationManagerDelegate {
+    @IBOutlet weak var distanceReading: UILabel!
+    var locationManager: CLLocationManager!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+        
+        view.backgroundColor = UIColor.grayColor()
+    }
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedAlways {
+            if CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion.self) {
+                if CLLocationManager.isRangingAvailable() {
+                    // do stuff
+                }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
