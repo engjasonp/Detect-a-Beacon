@@ -27,7 +27,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if status == .AuthorizedAlways {
             if CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion.self) {
                 if CLLocationManager.isRangingAvailable() {
-                    // do stuff
+                    startScanning()
                 }
             }
         }
@@ -39,6 +39,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         locationManager.startMonitoringForRegion(beaconRegion)
         locationManager.startRangingBeaconsInRegion(beaconRegion)
+    }
+    
+    func updateDistance(distance: CLProximity) {
+        UIView.animateWithDuration(0.8) { [unowned self] in
+            switch distance {
+            case .Unknown:
+                self.view.backgroundColor = UIColor.grayColor()
+                self.distanceReading.text = "UNKNOWN"
+                
+            case .Far:
+                self.view.backgroundColor = UIColor.blueColor()
+                self.distanceReading.text = "FAR"
+                
+            case .Near:
+                self.view.backgroundColor = UIColor.orangeColor()
+                self.distanceReading.text = "NEAR"
+                
+            case .Immediate:
+                self.view.backgroundColor = UIColor.redColor()
+                self.distanceReading.text = "RIGHT HERE"
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
